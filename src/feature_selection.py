@@ -59,8 +59,8 @@ def evaluate(
     FN = np.count_nonzero(neg & fa)
     result = {
         "Acc": (TP + TN) / (TP + TN + FP + FN),
-        "TPR": TP / (TP + FP),
-        "TNR": TN / (TN + FN),
+        "TPR": TP / (TP + FN),
+        "TNR": TN / (TN + FP),
     }
     return result
 
@@ -87,6 +87,9 @@ def feature_selection(
     TPR = np.zeros(folds)
     TNR = np.zeros(folds)
     n_feature = np.zeros(folds)
+    best_acc = 0
+    best_C = None
+    best_gamma = None
     for i, (train_id, test_id) in enumerate(kf1.split(X)):
         print(f"Running outer loop: Fold {i}")
         X_train = X.loc[train_id].reset_index(drop=True)
@@ -94,70 +97,69 @@ def feature_selection(
         X_test = X.loc[test_id].reset_index(drop=True)
         y_test = y.loc[test_id].reset_index(drop=True)
 
-        best_acc = 0
-        best_C = None
-        best_gamma = None
-        if radial_kernel:
-            for C, gamma in product(C_range, gamma_range):
-                print(f"Trying C={C} and gamma={gamma}")
-                total_acc = 0
-                for train_id2, test_id2 in kf2.split(X_train):
-                    X_train2 = X_train.loc[train_id2].reset_index(drop=True)
-                    y_train2 = y_train.loc[train_id2].reset_index(drop=True)
-                    X_test2 = X_train.loc[test_id2].reset_index(drop=True)
-                    y_test2 = y_train.loc[test_id2].reset_index(drop=True)
-                    result = P1(X=X_train2, y=y_train2, lambda_=lambda_)
-                    result2 = P3(
-                        X=X_train2,
-                        y=y_train2,
-                        zk=result["z"],
-                        C=C,
-                        gamma=gamma,
-                        lambda_=lambda_,
-                    )
-                    if result2 != None:
-                        total_acc += evaluate(
-                            X=X_test2,
-                            y=y_test2,
-                            beta=result2["beta"],
-                            radial_kernel=True,
-                            X_train=X_train2,
-                            y_train=y_train2,
-                            alpha=result2["alpha"],
-                            z=result["z"],
+        # Only tune parameter in the first fold
+        if i == 0:
+            if radial_kernel:
+                for C, gamma in product(C_range, gamma_range):
+                    print(f"Trying C={C} and gamma={gamma}")
+                    total_acc = 0
+                    for train_id2, test_id2 in kf2.split(X_train):
+                        X_train2 = X_train.loc[train_id2].reset_index(drop=True)
+                        y_train2 = y_train.loc[train_id2].reset_index(drop=True)
+                        X_test2 = X_train.loc[test_id2].reset_index(drop=True)
+                        y_test2 = y_train.loc[test_id2].reset_index(drop=True)
+                        result = P1(X=X_train2, y=y_train2, lambda_=lambda_)
+                        result2 = P3(
+                            X=X_train2,
+                            y=y_train2,
+                            zk=result["z"],
+                            C=C,
                             gamma=gamma,
-                        )["Acc"]
-                if total_acc > best_acc:
-                    best_acc = total_acc
-                    best_C = C
-                    best_gamma = gamma
-        else:
-            # No gamma for linear kernel
-            for C in C_range:
-                print(f"Trying C={C}")
-                total_acc = 0
-                for train_id2, test_id2 in kf2.split(X_train):
-                    X_train2 = X_train.loc[train_id2].reset_index(drop=True)
-                    y_train2 = y_train.loc[train_id2].reset_index(drop=True)
-                    X_test2 = X_train.loc[test_id2].reset_index(drop=True)
-                    y_test2 = y_train.loc[test_id2].reset_index(drop=True)
-                    result = P1(X=X_train2, y=y_train2, lambda_=lambda_)
-                    result2 = P2(
-                        X=X_train2, y=y_train2, zk=result["z"], C=C, lambda_=lambda_
-                    )
-                    if result2 != None:
-                        total_acc += evaluate(
-                            X=X_test2,
-                            y=y_test2,
-                            beta=result2["beta"],
-                            z=result["z"],
-                            radial_kernel=False,
-                            w=result2["w"],
-                        )["Acc"]
-                if total_acc > best_acc:
-                    best_acc = total_acc
-                    best_C = C
-                    print("Updating parameters")
+                            lambda_=lambda_,
+                        )
+                        if result2 != None:
+                            total_acc += evaluate(
+                                X=X_test2,
+                                y=y_test2,
+                                beta=result2["beta"],
+                                radial_kernel=True,
+                                X_train=X_train2,
+                                y_train=y_train2,
+                                alpha=result2["alpha"],
+                                z=result["z"],
+                                gamma=gamma,
+                            )["Acc"]
+                    if total_acc > best_acc:
+                        best_acc = total_acc
+                        best_C = C
+                        best_gamma = gamma
+            else:
+                # No gamma for linear kernel
+                for C in C_range:
+                    print(f"Trying C={C}")
+                    total_acc = 0
+                    for train_id2, test_id2 in kf2.split(X_train):
+                        X_train2 = X_train.loc[train_id2].reset_index(drop=True)
+                        y_train2 = y_train.loc[train_id2].reset_index(drop=True)
+                        X_test2 = X_train.loc[test_id2].reset_index(drop=True)
+                        y_test2 = y_train.loc[test_id2].reset_index(drop=True)
+                        result = P1(X=X_train2, y=y_train2, lambda_=lambda_)
+                        result2 = P2(
+                            X=X_train2, y=y_train2, zk=result["z"], C=C, lambda_=lambda_
+                        )
+                        if result2 != None:
+                            total_acc += evaluate(
+                                X=X_test2,
+                                y=y_test2,
+                                beta=result2["beta"],
+                                z=result["z"],
+                                radial_kernel=False,
+                                w=result2["w"],
+                            )["Acc"]
+                    if total_acc > best_acc:
+                        best_acc = total_acc
+                        best_C = C
+                        print("Updating parameters")
         result = P1(X=X_train, y=y_train, lambda_=lambda_)
         if radial_kernel:
             result2 = P3(

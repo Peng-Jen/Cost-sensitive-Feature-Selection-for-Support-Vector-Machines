@@ -102,7 +102,7 @@ class DataHolder:
         return X, y
 
     def fetch_dataset(self, name):
-        prefix = "../data" + os.sep
+        prefix = "data" + os.sep
 
         if name == "nursery":
             file_path = prefix + name + os.sep + name + ".data"
