@@ -55,8 +55,8 @@ def evaluate(
     fa = y != y_test
     TP = np.count_nonzero(pos & tr)
     TN = np.count_nonzero(neg & tr)
-    FP = np.count_nonzero(pos & fa)
-    FN = np.count_nonzero(neg & fa)
+    FP = np.count_nonzero(neg & fa)
+    FN = np.count_nonzero(pos & fa)
     result = {
         "Acc": (TP + TN) / (TP + TN + FP + FN),
         "TPR": TP / (TP + FN),
