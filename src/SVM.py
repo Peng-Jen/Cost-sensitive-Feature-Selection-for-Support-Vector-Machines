@@ -11,9 +11,7 @@ def P1(
     M2: int = 100,
     M3: int = 100,
 ):
-    """The cost-sensitive FS procedure"""
-    """ The first constraint causes infeasible """
-    """ Model is feasible if zeta is continuous """
+    """select crucial features"""
 
     # set up
     N = X.shape[1]
@@ -76,7 +74,7 @@ def P2(
     C: int = 100,
     M1: int = 100,
 ):
-    """Cost-sensitive sparse SVMs - linear"""
+    """Cost-sensitive sparse SVMs - linear kernel"""
     # set up
     N = X.shape[1]
     size = X.shape[0]
@@ -156,6 +154,7 @@ def P3(
     lambda_: list,
     M1: int = 100,
 ):
+    """Cost-sensitive sparse SVMs - radial kernel"""
     # set up
     N = X.shape[1]
     size = X.shape[0]

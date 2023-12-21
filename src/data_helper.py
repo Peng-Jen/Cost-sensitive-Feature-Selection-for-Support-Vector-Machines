@@ -10,11 +10,13 @@ class DataHolder:
             "wisconsin": 17,
             "votes": 105,
         }
+        self.name = None
 
     def get(self, name):
+        """data preprocessing"""
+        self.name = name
         if name == "nursery":
             df = self.fetch_dataset(name)
-            #             df = df.sample(frac=1)
             X = df.loc[:, df.columns[:-1]]
             X = self.encode(X)
             y = df[df.columns[-1]].to_frame("class")
@@ -98,7 +100,9 @@ class DataHolder:
                 y = self.multiclass_preprocessing(y)
 
             y = self.encode(y)
-
+        
+        # labels in our SVM should be in {1, -1}
+        y = y.replace(0, -1)
         return X, y
 
     def fetch_dataset(self, name):
@@ -179,6 +183,7 @@ class DataHolder:
         nums_of_row = X.shape[0]
         nums_of_feature = X.shape[1]
         positive_count = y.sum()
+        print(f"dataset: {self.name}")
         print(f"nums_of_row:{nums_of_row}")
         print(f"nums_of_feature:{nums_of_feature}")
         if positive_count.values < (nums_of_row - positive_count.values):

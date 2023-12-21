@@ -13,6 +13,7 @@ def evaluate(
     alpha: list = None,
     gamma: float = None,
 ):
+    """evaluate the training performance"""
     N = X.shape[1]
     size = X.shape[0]
     x = np.array([X.iloc[i, :] for i in range(size)]).astype(np.float32)
@@ -79,6 +80,7 @@ def feature_selection(
     C_range: list = [2**i for i in range(-5, 6)],
     gamma_range: list = [2**i for i in range(-5, 6)],
 ):
+    """main algorithm"""
     kf1 = KFold(n_splits=folds, shuffle=True, random_state=42)
     kf2 = KFold(n_splits=folds2, shuffle=True, random_state=42)
     X.reset_index(drop=True, inplace=True)
@@ -90,6 +92,7 @@ def feature_selection(
     best_acc = 0
     best_C = None
     best_gamma = None
+    print(f"Using lambda[-1]: {lambda_[0]}, lambda[1]: {lambda_[1]}")
     for i, (train_id, test_id) in enumerate(kf1.split(X)):
         print(f"Running outer loop: Fold {i}")
         X_train = X.loc[train_id].reset_index(drop=True)
@@ -97,7 +100,7 @@ def feature_selection(
         X_test = X.loc[test_id].reset_index(drop=True)
         y_test = y.loc[test_id].reset_index(drop=True)
 
-        # Only tune parameter in the first fold
+        # Only tune parameter in the first fold(due to the limited computation resource)
         if i == 0:
             if radial_kernel:
                 for C, gamma in product(C_range, gamma_range):
@@ -197,7 +200,6 @@ def feature_selection(
         TPR[i]=res["TPR"]
         TNR[i]=res["TNR"]
         n_feature[i] = result["z"].count(1)
-        # res["n_feature"] = n_feature
     
     res = {
         "Acc": Acc,
