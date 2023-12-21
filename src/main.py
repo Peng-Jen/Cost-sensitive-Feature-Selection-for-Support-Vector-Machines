@@ -13,7 +13,7 @@ for family in ["australian", "wisconsin", "votes", "nursery", "careval"]:
     X, y = dh.get(family)
     scaler = RobustScaler()
     X[X.columns] = scaler.fit_transform(X[X.columns])
-    dh.show_details(X[:20], y[:20])
+    dh.show_details(X, y)
 
     # feature_selection
     lambda_ = [0.55, 0.85]
