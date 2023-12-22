@@ -6,6 +6,7 @@ from os.path import join
 from result import prettifier
 import pickle
 
+path = os.path.realpath(__file__)
 
 for family in ["australian", "wisconsin", "votes", "nursery", "careval"]:
     # get data
@@ -23,7 +24,7 @@ for family in ["australian", "wisconsin", "votes", "nursery", "careval"]:
     prettifier(res)
 
     # write file
-    with open(f"./results/{family}_{lambda_[0]}_{lambda_[1]}.txt", mode="w") as f:
+    with open(f"{path[:-12]}/results/{family}_{lambda_[0]}_{lambda_[1]}.txt", mode="w") as f:
         print(res, file=f)
 
 

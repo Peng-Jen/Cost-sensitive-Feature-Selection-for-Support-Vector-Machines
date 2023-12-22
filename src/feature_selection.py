@@ -75,6 +75,7 @@ def feature_selection(
     y: pd.DataFrame,
     lambda_: list = [0.5, 0.5],
     radial_kernel: bool = False,
+    c: list = None,
     folds: int = 10,
     folds2: int = 10,
     C_range: list = [2**i for i in range(-5, 6)],
