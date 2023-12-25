@@ -182,10 +182,10 @@ class DataHolder:
     def show_details(self, X, y):
         nums_of_row = X.shape[0]
         nums_of_feature = X.shape[1]
-        positive_count = y.sum()
+        positive_count = int(y[y == 1].sum())
         print(f"dataset: {self.name}")
         print(f"nums_of_row:{nums_of_row}")
         print(f"nums_of_feature:{nums_of_feature}")
-        if positive_count.values < (nums_of_row - positive_count.values):
-            positive_count == nums_of_row - positive_count.values
-        print(f"positive_count:{positive_count.values}")
+        if positive_count < (nums_of_row - positive_count):
+            positive_count == nums_of_row - positive_count
+        print(f"positive_count:{positive_count}")
