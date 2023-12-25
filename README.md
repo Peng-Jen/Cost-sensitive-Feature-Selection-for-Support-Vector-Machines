@@ -224,7 +224,7 @@ Run phase-I under $\lambda_{-1}^\star = 0.5$ and $\lambda_1^\star=0.85$ <br/>
 As the table shown above, the number of selected features is drastically decreased
 
 ### Experiment 2: Performance Analysis under Different $\lambda^\star$
-- Run the entire flow under different $(\lambda_ {-1}^\star , \lambda_ 1^\star)$ with the dataset *australian* 
+Run the entire flow under different $(\lambda_ {-1}^\star , \lambda_ 1^\star)$ with the dataset *australian* 
 
 | $\lambda_{-1}^\star$ | $\lambda_1^\star$ | Acc.  | TPR   | TNR   | avg. # Feature selected (std.)|
 | :---                 | :---:             | :---: | :---: | :---: | :---:            |
@@ -238,69 +238,6 @@ As the table shown above, the number of selected features is drastically decreas
 | 0.85                 | 0.9               | -     | -     | -     | -                |
 | 0.65                 | 0.95              | 0.80  | 0.93  | 0.68  | 2.8 (0.40)       |
 | 0.85                 | 0.575             | 0.81  | 0.65  | 0.93  | 1.9              | 
-
-Note: mathematical model could be infeasible with some $(\lambda_{-1}^\star, \lambda_1^\star)$, e.g., $(\lambda_{-1}^\star = 0.85, \lambda_1^\star = 0.9)$
-## Discussion
-### Theoretical contribution
-
-### Experimental contribution 
-- The number of features can be sustantially reduced using the proposed method with the datasets from the paper
-### Problems & Limitation
-  - All datasets required at most 10% of original features only. Should try more datasets to support the robustness of the model
-  - Due to computation resources limitation, we tuned $C$ and $\gamma$ (if radial kernel is used) only for the first fold for $k$-fold
-### Other extension
-  - Effects of varying feature costs(currently all features have unit cost in our experiment, i.e., $c_k = 1$ for all $k$)
-  - Move TPR and TNR constraints into  objective function <br/>
-    $$\text{minimize}_ {\textbf{w}, \beta, z, \zeta, \lambda_ {-1}^\star , \lambda_1^\star} \quad \sum_k c_k z_k - \sum_i(\zeta_i - \lambda_{-1}^\star)(1-y_ i) - \sum_ i (\zeta_ i-\lambda_ 1^\star)(1 + y_ i),$$
-     
-    which minimizing total cost with consideration of maximizing $\lambda_1^\star$ and $\lambda_{-1}^\star$
-
-| Name        | $\|\Omega\|$ | $V$     | $\|\Omega_+\|$ |
-| :---        | :----:       | :---:   | :---:          |
-| wisconsin   | 569          | 30      |  357 (66.7%)    |
-| votes       | 435          | 32      |  267 (61.4%)    |
-| nursery     | 12,960       | 19      |  4,320 (33.3%)  |
-| australian  | 690          | 34      |  383 (55.5%)    |
-| careval     | 1,728        | 15      |  1,210 (70.0%)  |
- 
-### Pre-processing
-- Multiclass datasets are transformed into 2-class datasets, and the positive label is assigned to the majority class
-- Categorical variables are transformed into dummy variables
-- Missing values are imputed by median(numerical) or by mode(categorical)
-- Real-valued data are preprocessed using **RobustScalar** from the module **sklearn** to avoid outliers
-
-## Experiments
-### Pseudocode
-
-### Experiment 1: Feature Selection
-Run phase-I under $\lambda_{-1}^\star = 0.5$ and $\lambda_1^\star=0.85$ <br/>
-
-| Name       | # Origin features | # Selected features |
-| :---       | :---: | :---: |
-| wisconsin  | 30    | 1     |
-| votes      | 32    | 1     |
-| nursery    | 19    | 1     |
-| australian | 34    | 1     |
-| careval    | 15    | 2     |
-
-As the table shown above, the number of selected features is drastically decreased
-
-### Experiment 2: Performance Analysis under Different $\lambda^\star$
-- Run the entire flow under different $(\lambda_ {-1}^\star , \lambda_ 1^\star)$ with the dataset *australian* 
-
-| $\lambda_{-1}^\star$ | $\lambda_1^\star$ | Acc.  | TPR   | TNR   | avg. # Feature selected (std.)|
-| :---                 | :---:             | :---: | :---: | :---: | :---:                   |
-| 0.9                  | 0.5               | 0.76  | 0.53  | 0.94  | 1.2 (0.40)                    |
-| 0.85                 | 0.5               | 0.73  | 0.56  | 0.87  | 1 (0.00)                      |
-| 0.85                 | 0.575             | 0.81  | 0.65  | 0.93  | 1.9 (0.30)                    | 
-| 0.85                 | 0.6               | 0.82  | 0.67  | 0.94  | 2 (0.00)                      |
-| 0.75                 | 0.85              | 0.86  | 0.92  | 0.79  | 1 (0.00)                      |
-| 0.8                  | 0.85              | 0.84  | 0.88  | 0.80  | 1.7 (0.46)              |
-| 0.75 | 0.9            | 0.86              | 0.92  | 0.79    | 1 (0.00)         
-| 0.8                  | 0.9               | 0.86  | 0.92  | 0.80  | 1.7 (0.46)              |
-| 0.85                 | 0.9               | -     | -     | -     | -                       |
-| 0.65                 | 0.95               |0.80              | 0.93  | 0.68    | 2.8 (0.40)   
-
 
 Note: mathematical model could be infeasible with some $(\lambda_{-1}^\star, \lambda_1^\star)$, e.g., $(\lambda_{-1}^\star = 0.85, \lambda_1^\star = 0.9)$
 ## Discussion
