@@ -132,10 +132,10 @@ As the table shown above, the number of selected features is drastically decreas
 | $\lambda_1^*$ | $\lambda_{-1}^*$ | Acc.  | TPR   | TNR   | avg. # Feature selected |
 | :---          | :---:            | :---: | :---: | :---: | :---:                   |
 | 0.5           | 0.85             | 0.88  | 0.77  | 0.94  | 1                       |
-| 0.55          | 0.85             | 0.73  | 0.56  | 0.87  | 1                       |
-| 0.575         | 0.85             | 0.81  | 0.65  | 0.93  | 1.9                     | 
-| 0.6           | 0.85             | 0.82  | 0.67  | 0.94  | 2                       |
-| 0.5           | 0.9              | 0.76  | 0.53  | 0.94  | 1.2                     |
+| 0.55          | 0.85             | 0.73(0.04)  | 0.56(0.06)  | 0.87(0.06)  | 1(0)                       |
+| 0.575         | 0.85             | 0.81(0.06)  | 0.65(0.11)  | 0.93(0.11)  | 1.9(0.3)                     | 
+| 0.6           | 0.85             | 0.82(0.04)  | 0.67(0.08)  | 0.94(0.08)  | 2(0)                       |
+| 0.5           | 0.9              | 0.76(0.05)  | 0.53(0.11)  | 0.94(0.11)  | 1.2(0.4)                     |
 
 ## Discussion
 - The number of features can be sustantially reduced using the proposed method with the datasets from the paper
