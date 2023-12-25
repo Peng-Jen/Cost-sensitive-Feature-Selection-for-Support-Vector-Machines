@@ -114,20 +114,20 @@ We use the datasets listed in the paper, the following table shows
 ### Pseudocode
 
 ### Experiment 1: Feature Selection
-Run phase-I under $\lambda_{-1}^*=0.5$ and $\lambda_1^*=0.85$ <br/>
+Run phase-I under $\lambda_{-1}^\*=0.5$ and $\lambda_1^\*=0.85$ <br/>
 
 | Name       | # Origin features | # Selected features |
 | :---       | :---: | :---: |
-| wisconsin  | | 1 |
-| votes      | | 1 |
-| nursery    | | 1 |
-| australian | | 1 |
-| careval    | | 2 |
+| wisconsin  | 30 | 1 |
+| votes      | 32 | 1 |
+| nursery    | 19 | 1 |
+| australian | 34 | 1 |
+| careval    | 15 | 2 |
 
 As the table shown above, the number of selected features is drastically decreased
 
 ### Experiment 2: Performance Analysis under Different $\lambda$
-- Run the entire flow under different $(\lambda_{-1}^*, \lambda_1^*)$ with the dataset *australian* 
+- Run the entire flow under different $(\lambda_{-1}^\*, \lambda_1^\*)$ with the dataset *australian* 
 
 | $\lambda_1^*$ | $\lambda_{-1}^*$ | Acc.  | TPR   | TNR   | avg. # Feature selected |
 | :---          | :---:            | :---: | :---: | :---: | :---:                   |
@@ -143,6 +143,6 @@ As the table shown above, the number of selected features is drastically decreas
 - Other extension:
   - Effects of varying feature costs(currently all features have unit cost in our experiment)
   - Move TPR and TNR constraints into  objective function 
-    $$\text{minimize}_{\textbf{w}, \beta, z, \zeta, \lambda_{-1}^*, \lambda_1^*}\quad \sum_k c_k z_k - \sum_i (\zeta_i - \lambda_{-1}^*)(1-y_i) - \sum_i (\zeta_i - \lambda_1^*)(1+y_i),$$
+    $$\text{minimize}_{\textbf{w}, \beta, z, \zeta, \lambda_{-1}^\*, \lambda_1^\*}\quad \sum_k c_k z_k - \sum_i (\zeta_i - \lambda_{-1}^\*)(1-y_i) - \sum_i (\zeta_i - \lambda_1^\*)(1+y_i),$$
     
-    which minimizing total cost with consideration of maximizing $\lambda_1^*$ and $\lambda_{-1}^*$
+    which minimizing total cost with consideration of maximizing $\lambda_1^\*$ and $\lambda_{-1}^\*$
