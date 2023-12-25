@@ -156,4 +156,4 @@ Note: mathematical model could be infeasible with some $(\lambda_{-1}^\star, \la
   - Move TPR and TNR constraints into  objective function <br/>
     $$\text{minimize}_ {\textbf{w}, \beta, z, \zeta, \lambda_ {-1}^\star , \lambda_1^\star} \quad \sum_k c_k z_k - \sum_i(\zeta_i - \lambda_{-1}^\star)(1-y_ i) - \sum_ i (\zeta_ i-\lambda_ 1^\star)(1 + y_ i),$$
      
-    which minimizing total cost with consideration of maximizing $\lambda_1^\star$ and $\lambda_{-1}^\star$
+    which minimizes total cost with consideration of maximizing $\lambda_1^\star$ and $\lambda_{-1}^\star$
