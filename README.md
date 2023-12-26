@@ -87,13 +87,13 @@ The flow is shown in detail in the following pseudocode:
   $$z_k \in \\{0, 1 \\},\quad \forall k$$ -->
 $$
   \begin{array}{rll}
-  \text{minimize}_{\mathbf{w}, \beta, z, \zeta} & \sum_k c_k z_k                                                               \\
-  \text{subject to}                             & y_i(\textbf{w}^T x_i + \beta) \ge 1 - M_1(1-\zeta_i)             & \forall i \\
-                                                & \sum\_{i}\zeta_i(1-y_i) \ge \lambda\_{-1}^\star\sum\_{i}(1-y_i)              \\
-                                                & \sum\_{i}\zeta_i(1+y_i) \ge \lambda_1^\star\sum\_{i}(1+y_i)                  \\
-                                                & \lvert w_k\rvert \le M_2 z_k                                     & \forall k \\
-                                                & \zeta_i \in \\{0, 1\\}                                           & \forall i \\
-                                                & z_k \in \\{0, 1 \\}                                              & \forall k
+  \text{minimize}\_{\mathbf{w}, \beta, z, \zeta} & \sum_k c_k z_k                                                               \\
+  \text{subject to}                              & y_i(\textbf{w}^T x_i + \beta) \ge 1 - M_1(1-\zeta_i)             & \forall i \\
+                                                 & \sum\_{i}\zeta_i(1-y_i) \ge \lambda\_{-1}^\star\sum\_{i}(1-y_i)              \\
+                                                 & \sum\_{i}\zeta_i(1+y_i) \ge \lambda_1^\star\sum\_{i}(1+y_i)                  \\
+                                                 & \lvert w_k\rvert \le M_2 z_k                                     & \forall k \\
+                                                 & \zeta_i \in \\{0, 1\\}                                           & \forall i \\
+                                                 & z_k \in \\{0, 1 \\}                                              & \forall k
 \end{array}
 $$
 
