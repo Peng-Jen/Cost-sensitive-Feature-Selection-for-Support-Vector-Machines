@@ -135,18 +135,6 @@ $$
     $$K_z(x, x')=\exp\left(-\gamma\left(\sum_k z_k(x^{(k)}-x'^{(k)})^2\right)\right),$$
     where the value of $z$ is the result of phase_I and $\gamma$ should be tuned
 - Formulation(Dual)<br/>
-$$
-\begin{array}{rll}
-\text{minimize}\_{\alpha,\xi,\beta,\zeta} & \sum_{i, j}\alpha_i y_i\alpha_j y_j K_z(x_i, x_j)+C\sum_i\xi_i                 \\
-\text{subject to}                         & y_i\left(\sum_j\alpha_j y_j K_z(x_i, x_j)+\beta\right)\ge 1 -\xi_i & \forall i \\
-                                          & \sum_i\zeta_i(1-y_i) \ge \lambda\_{-1}^\star\sum_i(1-y_i)                      \\
-                                          & \sum_i\zeta_i(1+y_i) \ge \lambda_1^\star\sum_i(1+y_i)                          \\
-                                          & \sum_i \alpha_i y_i = 0                                                        \\
-                                          & 0\le \alpha_i\le C/2                                               & \forall i \\
-                                          & 0\le \xi_i \le M_3(1-\xi_i)                                        & \forall i \\
-                                          & \zeta_i \in \\{0, 1\\}                                             & \forall i
-\end{array}
-$$
     <!-- $$\text{minimize}_ {\alpha,\xi,\beta,\zeta} \sum_{i, j}\alpha_i y_i\alpha_j y_j K_z(x_i, x_j)+C\sum_i\xi_i$$
       
     subject to
@@ -164,6 +152,18 @@ $$
     $$0\le \xi_i \le M_3(1-\xi_i), \quad\forall i\in I$$
 
     $$\zeta_i \in \\{0, 1\\},\quad\forall i\in I$$ -->
+$$
+\begin{array}{rll}
+\text{minimize}\_{\alpha,\xi,\beta,\zeta} & \sum_{i, j}\alpha_i y_i\alpha_j y_j K_z(x_i, x_j)+C\sum_i\xi_i                 \\
+\text{subject to}                         & y_i\left(\sum_j\alpha_j y_j K_z(x_i, x_j)+\beta\right)\ge 1 -\xi_i & \forall i \\
+                                          & \sum_i\zeta_i(1-y_i) \ge \lambda\_{-1}^\star\sum_i(1-y_i)                      \\
+                                          & \sum_i\zeta_i(1+y_i) \ge \lambda_1^\star\sum_i(1+y_i)                          \\
+                                          & \sum_i \alpha_i y_i = 0                                                        \\
+                                          & 0\le \alpha_i\le C/2                                               & \forall i \\
+                                          & 0\le \xi_i \le M_3(1-\xi_i)                                        & \forall i \\
+                                          & \zeta_i \in \\{0, 1\\}                                             & \forall i
+\end{array}
+$$
 ## Datasets 
 ### Data Description
 We use the datasets listed in the paper, the following table shows
