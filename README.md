@@ -12,25 +12,25 @@ The reference paper is ["Cost-sensitive Feature Selection for Support Vector Mac
 ### Overall flow
 The cost-sensitive SVM is done in two phases:
 - Phase-I: Feature selection (P1):
-    * ILP model with $𝑙_1$-norm SVM (with a linear kernel) to select a min-cost subset of features with TPR and TNR guarantees
+    * Integer linear programming (ILP) model with $𝑙_1$-norm SVM (with a linear kernel) to select a min-cost subset of features with TPR and TNR guarantees
 - Phase-II: Training:
     * Linear (P2) or radial (P3) kernel
     * Standard ($𝑙_2$-norm) SVM with TPR and TNR guarantees using the selected features
 
-For evaluation, a 10-fold cross-validation is applied.
+For evaluation, a $k$-fold cross-validation is applied.
 
 The flow is shown in detail in the following pseudocode:
 
 > Input: Dataset $D$<br/>
 > Output: Cross-validation results of the SVM
 > 
-> **for each** fold $(D_{\rm train}, D_{\rm test})$ in $10$-fold($D$) **do**
+> **for each** fold $(D_{\rm train}, D_{\rm test})$ in $k$-fold($D$) **do**
 >> **if** this is the first fold **do**
 >>> $\rm Acc_{\rm best}\gets 0$<br/>
 >>> $C_{\rm best}\gets 0$<br/>
 >>> $\gamma_{\rm best}\gets 0$<br/>
 >>> **for each** pair of $(C,\gamma)$ **do**
->>>> **for each** fold $(D_{\rm train}', D_{\rm test}')$ in $10$-fold($D_{\rm train}$) **do**
+>>>> **for each** fold $(D_{\rm train}', D_{\rm test}')$ in $k'$-fold($D_{\rm train}$) **do**
 >>>>> Run (P1) on $D_{\rm train}'$<br/>
 >>>>> Run (P2) or (P3) on $D_{\rm train}'$ with the selected features and parameters $C$ and $\gamma$ <br/>
 >>>>> Evaluate and record the accuracy of the resulting SVM on $D_{\rm test}'$
@@ -155,7 +155,6 @@ We use the datasets listed in the paper, the following table shows
 - Missing values are imputed by median(numerical) or by mode(categorical)
 - Real-valued data are preprocessed using **RobustScalar** from the module **sklearn** to avoid outliers
 
-## Pseudocode
 ## Experiments
 ### Setting
 - Set a 300-second time limit on the Gurobi solver to prevent the model from taking too long to solve
@@ -191,9 +190,8 @@ Run the entire flow under different $(\lambda_ {-1}^\star , \lambda_ 1^\star)$ w
 
 Note: mathematical model could be infeasible with some $(\lambda_{-1}^\star, \lambda_1^\star)$, e.g., $(\lambda_{-1}^\star = 0.85, \lambda_1^\star = 0.9)$
 ## Discussion
-### Theoretical contribution
-
-### Experimental contribution 
+### Contribution 
+- A mathematical-programming-based feature selection method is proposed, with flexible performance guarantees 
 - The number of features can be substantially reduced using the proposed method with the datasets from the paper
 ### Problems & Limitation
   - All datasets required at most 10% of original features only. Should try more datasets to support the robustness of the model
