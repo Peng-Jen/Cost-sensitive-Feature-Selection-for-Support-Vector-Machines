@@ -1,29 +1,29 @@
 # Cost-sensitive Feature Selection for Support Vector Machines
 
 ## Introduction
-This project is aim to find a classifier with minimum feature costs without damaging the original performance too much. 
+This project aims to find a classifier with minimum feature costs without damaging the original performance too much. 
 The reference paper is ["Cost-sensitive Feature Selection for Support Vector Machines"](<https://www.sciencedirect.com/science/article/pii/S0305054818300741> "Title")
 
 - Why cost-sensitive feature selection?
     - Feature acquisition can be costly (in terms of money, time, etc.)
-    - E.g., in medical application, each feature may corresponds to one test result
+    - E.g., in medical applications, each feature may correspond to one test result
 - Why SVM?
-    - Mathematical-optimization-based: flexible, additional constraints(e.g., performance guarantee) allowed and objective(e.g., minimizing total cost) to be incoporated
+    - Mathematical-optimization-based: flexible, additional constraints(e.g., performance guarantee) allowed and objective(e.g., minimizing total cost) to be incorporated
 ## Mathematical Models
 ### Phase-I: Feature Selection
 - Decision variables
-  - $w$ : Vector with weights of features
-  - $\beta$ : Offset
-  - $z_k$ : Binary variable. Has the value 1 if the $k$-th feature is selected and 0 otherwise
-  - $\zeta_i$ : Binary variable. Has the value 1 if the $i$-th instance is correctly classified
+  - $w$: Vector with weights of features
+  - $\beta$: Offset
+  - $z_k$: Binary variable. Has the value 1 if the $k$-th feature is selected and 0 otherwise
+  - $\zeta_i$: Binary variable. Has the value 1 if the $i$-th instance is correctly classified
 - Parameters
-  - $c_k$ : The cost of the $k$-th feature
-  - $M_1$, $M_2$ : Large numbers
-  - $x_i$ : Features vector of the $i$-th instance
-  - $y_i$ : Label of the $i$-th instance, and for amy instance $i$, we have $y_i\in\\{1, -1\\}$
-    - The multiclass datasets are transformed into 2-class dataset. The details will be explained in the later section
-  - $\lambda_1^\star$ : Threshold of **True Positve Rate(TPR)**
-  - $\lambda_{-1}^\star$ : Threshold of **True Negative Rate(TNR)**
+  - $c_k$: The cost of the $k$-th feature
+  - $M_1$, $M_2$: Large numbers
+  - $x_i$: Features vector of the $i$-th instance
+  - $y_i$: Label of the $i$-th instance, and for amy instance $i$, we have $y_i\in\\{1, -1\\}$
+    - The multiclass datasets are transformed into 2-class datasets. The details will be explained in the later section
+  - $\lambda_1^\star$: Threshold of **True Positive Rate(TPR)**
+  - $\lambda_{-1}^\star$: Threshold of **True Negative Rate(TNR)**
 - Formulation <br/>
   $$\text{minimize}_{\textbf{w}, \beta, z, \zeta}\quad \sum_k c_k z_k$$
     
@@ -43,10 +43,10 @@ The reference paper is ["Cost-sensitive Feature Selection for Support Vector Mac
 
 For both phase-II and phase-III, the result of $z$ in phase-I is embedded, and there are 
 - Additional decision variables
-  - $\xi_i$ : Penalty associated to misclassifying instance $i$
+  - $\xi_i$: Penalty associated to misclassifying instance $i$
 - Additional parameters
-  - $M_3$ : Large number
-  - $C$ : Cost of misclassifying
+  - $M_3$: Large number
+  - $C$: Cost of misclassifying
 
 ### Phase-II: Linear SVM kernel
 - Formulation <br/>
@@ -147,10 +147,10 @@ Note: mathematical model could be infeasible with some $(\lambda_{-1}^\star, \la
 ### Theoretical contribution
 
 ### Experimental contribution 
-- The number of features can be sustantially reduced using the proposed method with the datasets from the paper
+- The number of features can be substantially reduced using the proposed method with the datasets from the paper
 ### Problems & Limitation
   - All datasets required at most 10% of original features only. Should try more datasets to support the robustness of the model
-  - Due to computation resources limitation, we tuned $C$ and $\gamma$ (if radial kernel is used) only for the first fold for $k$-fold
+  - Due to computation resources limitation, we tuned $C$ and $\gamma$ (if the radial kernel is used) only for the first fold for $k$-fold
 ### Other extension
   - Effects of varying feature costs(currently all features have unit cost in our experiment, i.e., $c_k = 1$ for all $k$)
   - Move TPR and TNR constraints into  objective function <br/>
