@@ -70,7 +70,7 @@ The flow is shown in detail in the following pseudocode:
   - $\lambda_1^\star$: Threshold of **True Positive Rate (TPR)**
   - $\lambda_{-1}^\star$: Threshold of **True Negative Rate (TNR)**
 - Formulation <br/>
-  $$\text{minimize}_{\textbf{w}, \beta, z, \zeta}\quad \sum_k c_k z_k$$
+  <!-- $$\text{minimize}_{\textbf{w}, \beta, z, \zeta}\quad \sum_k c_k z_k$$
     
   subject to <br/>
   
@@ -84,7 +84,18 @@ The flow is shown in detail in the following pseudocode:
 
   $$\zeta_i \in \\{0, 1\\},\quad \forall i$$
 
-  $$z_k \in \\{0, 1 \\},\quad \forall k$$
+  $$z_k \in \\{0, 1 \\},\quad \forall k$$ -->
+$$
+  \begin{array}{rll}
+  \text{minimize}_{\mathbf{w}, \beta, z, \zeta} & \sum_k c_k z_k                                                               \\
+  \text{subject to}                             & y_i(\textbf{w}^T x_i + \beta) \ge 1 - M_1(1-\zeta_i)             & \forall i \\
+                                                & \sum\_{i}\zeta_i(1-y_i) \ge \lambda\_{-1}^\star\sum\_{i}(1-y_i)              \\
+                                                & \sum\_{i}\zeta_i(1+y_i) \ge \lambda_1^\star\sum\_{i}(1+y_i)                  \\
+                                                & \lvert w_k\rvert \le M_2 z_k                                     & \forall k \\
+                                                & \zeta_i \in \\{0, 1\\}                                           & \forall i \\
+                                                & z_k \in \\{0, 1 \\}                                              & \forall k
+\end{array}
+$$
 
 For both phase-II and phase-III, the result of $z$ in phase-I is embedded, and there are 
 - Additional decision variables
@@ -95,7 +106,7 @@ For both phase-II and phase-III, the result of $z$ in phase-I is embedded, and t
 
 ### Phase-II: Linear SVM kernel
 - Formulation <br/>
-  $$\text{minimize}_{\textbf{w},\beta,\xi}\sum_j w_j^2z_j + C \sum_i\xi_i$$
+  <!-- $$\text{minimize}_{\textbf{w},\beta,\xi}\sum_j w_j^2z_j + C \sum_i\xi_i$$
 
   subject to <br/>
   $$y_i\left(\sum_j w_jz_jx_{ij} + \beta\right) \ge 1 - \xi_i, \quad \forall i\in I$$
@@ -106,8 +117,17 @@ For both phase-II and phase-III, the result of $z$ in phase-I is embedded, and t
   
   $$0\le \xi_i\le M_3(1-\zeta_i),\quad \forall i\in I$$
 
-  $$\zeta_i\in\\{0, 1\\},\quad\forall i\in I$$
-
+  $$\zeta_i\in\\{0, 1\\},\quad\forall i\in I$$ -->
+$$
+\begin{array}{rll}
+\text{minimize}_{\mathbf{w},\beta,\xi} & \sum_j w_j^2 z_j + C \sum_i\xi_i                                       \\
+\text{subject to}                      & y_i\left(\sum_j w_jz_jx\_{ij} + \beta\right) \ge 1 - \xi_i & \forall i \\
+                                       & \sum_i\zeta_i(1-y_i)\ge \lambda\_{-1}^\star\sum_i(1-y_i)               \\
+                                       & \sum_i\zeta_i(1+y_i)\ge \lambda_1^\star\sum_i(1+y_i)                   \\
+                                       & 0\le \xi_i\le M_3(1-\zeta_i)                               & \forall i \\
+                                       & \zeta_i\in\\{0, 1\\}                                       & \forall i
+\end{array}
+$$
 
 
 ### Phase-III: Radial kernel
@@ -115,8 +135,19 @@ For both phase-II and phase-III, the result of $z$ in phase-I is embedded, and t
     $$K_z(x, x')=\exp\left(-\gamma\left(\sum_k z_k(x^{(k)}-x'^{(k)})^2\right)\right),$$
     where the value of $z$ is the result of phase_I and $\gamma$ should be tuned
 - Formulation(Dual)<br/>
-    
-    $$\text{minimize}_ {\alpha,\xi,\beta,\zeta} \sum_{i, j}\alpha_i y_i\alpha_j y_j K_z(x_i, x_j)+C\sum_i\xi_i$$
+$$
+\begin{array}{rll}
+\text{minimize}\_{\alpha,\xi,\beta,\zeta} & \sum_{i, j}\alpha_i y_i\alpha_j y_j K_z(x_i, x_j)+C\sum_i\xi_i                 \\
+\text{subject to}                         & y_i\left(\sum_j\alpha_j y_j K_z(x_i, x_j)+\beta\right)\ge 1 -\xi_i & \forall i \\
+                                          & \sum_i\zeta_i(1-y_i) \ge \lambda\_{-1}^\star\sum_i(1-y_i)                      \\
+                                          & \sum_i\zeta_i(1+y_i) \ge \lambda_1^\star\sum_i(1+y_i)                          \\
+                                          & \sum_i \alpha_i y_i = 0                                                        \\
+                                          & 0\le \alpha_i\le C/2                                               & \forall i \\
+                                          & 0\le \xi_i \le M_3(1-\xi_i)                                        & \forall i \\
+                                          & \zeta_i \in \\{0, 1\\}                                             & \forall i
+\end{array}
+$$
+    <!-- $$\text{minimize}_ {\alpha,\xi,\beta,\zeta} \sum_{i, j}\alpha_i y_i\alpha_j y_j K_z(x_i, x_j)+C\sum_i\xi_i$$
       
     subject to
 
@@ -132,7 +163,7 @@ For both phase-II and phase-III, the result of $z$ in phase-I is embedded, and t
 
     $$0\le \xi_i \le M_3(1-\xi_i), \quad\forall i\in I$$
 
-    $$\zeta_i \in \\{0, 1\\},\quad\forall i\in I$$
+    $$\zeta_i \in \\{0, 1\\},\quad\forall i\in I$$ -->
 ## Datasets 
 ### Data Description
 We use the datasets listed in the paper, the following table shows
