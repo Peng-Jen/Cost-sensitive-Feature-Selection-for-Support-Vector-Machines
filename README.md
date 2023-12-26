@@ -110,9 +110,11 @@ We use the datasets listed in the paper, the following table shows
 - Missing values are imputed by median(numerical) or by mode(categorical)
 - Real-valued data are preprocessed using **RobustScalar** from the module **sklearn** to avoid outliers
 
+## Pseudocode
 ## Experiments
-### Pseudocode
-Set a 300-second time limit on the Gurobi solver to prevent the model from taking too long to solve
+### Setting
+- Set a 300-second time limit on the Gurobi solver to prevent the model from taking too long to solve
+- Set $M_1=100$, $M_2=100$, $M_3=100$ and $c_k=1\ \forall k$ as default
 ### Experiment 1: Feature Selection
 Run phase-I under $\lambda_{-1}^\star = 0.5$ and $\lambda_1^\star=0.85$ <br/>
 
