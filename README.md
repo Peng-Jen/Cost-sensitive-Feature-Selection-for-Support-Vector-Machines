@@ -1,5 +1,4 @@
 # Cost-sensitive Feature Selection for Support Vector Machines
-
 ## Introduction
 This project aims to find a classifier with minimum feature costs without damaging the original performance too much. 
 The reference paper is ["Cost-sensitive Feature Selection for Support Vector Machines"](<https://www.sciencedirect.com/science/article/pii/S0305054818300741> "Title")
@@ -9,6 +8,52 @@ The reference paper is ["Cost-sensitive Feature Selection for Support Vector Mac
     - E.g., in medical applications, each feature may correspond to one test result
 - Why SVM?
     - Mathematical-optimization-based: flexible, additional constraints(e.g., performance guarantee) allowed and objective(e.g., minimizing total cost) to be incorporated
+
+### Overall flow
+The cost-sensitive SVM is done in two phases:
+- Phase-I: Feature selection (P1):
+    * ILP model with $𝑙_1$-norm SVM (with a linear kernel) to select a min-cost subset of features with TPR and TNR guarantees
+- Phase-II: Training:
+    * Linear (P2) or radial (P3) kernel
+    * Standard ($𝑙_2$-norm) SVM with TPR and TNR guarantees using the selected features
+
+For evaluation, a 10-fold cross-validation is applied.
+
+The flow is shown in detail in the following pseudocode:
+
+> Input: Dataset $D$<br/>
+> Output: Cross-validation results of the SVM
+> 
+> **for each** fold $(D_{\rm train}, D_{\rm test})$ in $10$-fold($D$) **do**
+>> **if** this is the first fold **do**
+>>> $\rm Acc_{\rm best}\gets 0$<br/>
+>>> $C_{\rm best}\gets 0$<br/>
+>>> $\gamma_{\rm best}\gets 0$<br/>
+>>> **for each** pair of $(C,\gamma)$ **do**
+>>>> **for each** fold $(D_{\rm train}', D_{\rm test}')$ in $10$-fold($D_{\rm train}$) **do**
+>>>>> Run (P1) on $D_{\rm train}'$<br/>
+>>>>> Run (P2) or (P3) on $D_{\rm train}'$ with the selected features and parameters $C$ and $\gamma$ <br/>
+>>>>> Evaluate and record the accuracy of the resulting SVM on $D_{\rm test}'$
+>>>>> 
+>>>> **end for**
+>>>>
+>>>> **if** the average accuracy across all 10 folds $\geq {\rm Acc_{\rm best}}$ **do**
+>>>>> $\rm Acc_{\rm best}\gets$ average accuracy<br/>
+>>>>> $C_{\rm best}\gets C$<br/>
+>>>>> $\gamma_{\rm best}\gets \gamma$<br/>
+>>>>> 
+>>>> **end if**
+>>>
+>>> **end if**
+>>
+>> **end for**
+>>
+>> Run (P1) on $D_{\rm train}$<br/>
+>> Run (P2) or (P3) on $D_{\rm train}$ with the selected features and parameters $C_{\rm best}$ and $\gamma_{\rm best}$<br/>
+>> Evaluate and record the accuracy, TPR, TNR of the resulting SVM on $D_{\rm test}$
+>
+> **end for**
+
 ## Mathematical Models
 ### Phase-I: Feature Selection
 - Decision variables
@@ -22,8 +67,8 @@ The reference paper is ["Cost-sensitive Feature Selection for Support Vector Mac
   - $x_i$: Features vector of the $i$-th instance
   - $y_i$: Label of the $i$-th instance, and for amy instance $i$, we have $y_i\in\\{1, -1\\}$
     - The multiclass datasets are transformed into 2-class datasets. The details will be explained in the later section
-  - $\lambda_1^\star$: Threshold of **True Positive Rate(TPR)**
-  - $\lambda_{-1}^\star$: Threshold of **True Negative Rate(TNR)**
+  - $\lambda_1^\star$: Threshold of **True Positive Rate (TPR)**
+  - $\lambda_{-1}^\star$: Threshold of **True Negative Rate (TNR)**
 - Formulation <br/>
   $$\text{minimize}_{\textbf{w}, \beta, z, \zeta}\quad \sum_k c_k z_k$$
     
